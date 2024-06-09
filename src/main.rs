@@ -14,6 +14,7 @@ fn rocket() -> _ {
     let figment = rocket
         .figment()
         .clone()
+        .merge((rocket::Config::ADDRESS, "::"))
         .merge((rocket::Config::PORT, 14400));
     rocket.configure(figment)
 }
