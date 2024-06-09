@@ -29,10 +29,18 @@ static REQWEST: Lazy<ClientWithMiddleware> = Lazy::new(|| {
 });
 
 #[rocket::get("/?<img>&<ttl>&<hl>")]
-async fn index(img: String, ttl: String, hl: Option<String>) -> (ContentType, Vec<u8>) {
-    let bg_bytes = {
-        let res = (&REQWEST).get(&img).send().await.unwrap();
-        res.bytes().await.unwrap()
+async fn index(img: Option<String>, ttl: String, hl: Option<String>) -> (ContentType, Vec<u8>) {
+    let bg_bytes = match img {
+        Some(img) => {
+            let res = (&REQWEST).get(&img).send().await.unwrap();
+            res.bytes().await.unwrap()
+        }
+        None => Asset::get("bg_1.png")
+            .unwrap()
+            .data
+            .as_ref()
+            .to_owned()
+            .into(),
     };
 
     let res = draw(
