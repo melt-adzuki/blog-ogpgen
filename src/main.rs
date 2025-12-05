@@ -56,7 +56,7 @@ async fn index(img: Option<String>, ttl: String, hl: Option<String>) -> (Content
     (ContentType::PNG, res)
 }
 
-const WIDTH: i32 = 1440;
+const WIDTH: i32 = 1920;
 const HEIGHT: i32 = 1080;
 
 #[derive(Embed)]
@@ -100,7 +100,7 @@ fn draw(text: &str, overlay_type: OverlayType, bg_bytes: &[u8]) -> Vec<u8> {
         let file = Asset::get("font_1.otf").unwrap();
         let bytes = file.data.as_ref();
         let typeface = font_mgr.new_from_data(&bytes, Option::None).unwrap();
-        Font::from_typeface(typeface, 72.0)
+        Font::from_typeface(typeface, 100.0)
     };
     font.set_edging(font::Edging::AntiAlias);
 
@@ -119,14 +119,14 @@ fn draw(text: &str, overlay_type: OverlayType, bg_bytes: &[u8]) -> Vec<u8> {
             let file = Asset::get("font_2.otf").unwrap();
             let bytes = file.data.as_ref();
             let typeface = font_mgr.new_from_data(&bytes, Option::None).unwrap();
-            Font::from_typeface(typeface, 54.0)
+            Font::from_typeface(typeface, 64.0)
         };
         font_highlight.set_edging(font::Edging::AntiAlias);
 
         text_utils::draw_str(
             canvas,
             text,
-            (292, 1004),
+            (298, 1004),
             &font_highlight,
             &paint,
             text_utils::Align::Center,
@@ -134,8 +134,8 @@ fn draw(text: &str, overlay_type: OverlayType, bg_bytes: &[u8]) -> Vec<u8> {
     }
 
     let (threshold, center) = match overlay_type {
-        OverlayType::Normal => (1200.0, 807),
-        OverlayType::Highlight(_) => (1000.0, 900),
+        OverlayType::Normal => (1618.0, 1015),
+        OverlayType::Highlight(_) => (1419.0, 1114),
     };
 
     if width > threshold {
@@ -146,7 +146,7 @@ fn draw(text: &str, overlay_type: OverlayType, bg_bytes: &[u8]) -> Vec<u8> {
     text_utils::draw_str(
         canvas,
         text,
-        (center, 1010),
+        (center, HEIGHT - 64),
         &font,
         &paint,
         text_utils::Align::Center,
